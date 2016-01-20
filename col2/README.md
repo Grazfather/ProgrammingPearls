@@ -2,4 +2,6 @@
 
 ## Problems
 
-a. See _bsmissing.c_
+a. See _bsmissing.c_.
+
+b. See _rotatevec.c_.

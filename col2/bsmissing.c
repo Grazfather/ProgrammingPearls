@@ -45,17 +45,13 @@ int measure_halves(char* fn, int n, int missing)
 		printf("Left is bigger than right\n");
 		printf("%d\n", missing);
 		missing = measure_halves(fr_name, n+1, missing);
-		/*missing = measure_halves(fr_name, n+1, missing | (1 << n));*/
 	} else if(r > l) {
 		printf("Right is bigger than left\n");
 		printf("%d\n", missing);
-		/*missing = measure_halves(fl_name, n+1, missing | (1 << n));*/
 		missing = measure_halves(fl_name, n+1, missing | (1 << n));
 	} else {
 		printf("Both halves are even! %d\n", l);
 	}
 
-	fclose(fl);
-	fclose(fr);
 	return missing;
 }

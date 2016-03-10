@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-void reverse_vec(char *vec, int len)
+void reverse_vec(char *vec, size_t len)
 {
 	for(int i = 0; i < len/2; i++)
 	{
@@ -13,7 +14,7 @@ void reverse_vec(char *vec, int len)
 	}
 }
 
-void rotate_vec_reverse(char* vec, int len, int rot)
+void rotate_vec_reverse(char* vec, size_t len, size_t rot)
 {
 	// First reverse vec[0..rot-1]
 	reverse_vec(vec, rot);
@@ -86,7 +87,7 @@ void rotate_vec_recursive(char *vec, size_t size, size_t rot)
 	//   1. Split up b into b_l and b_r, where len(b_r) = len(a).
 	//   2. Swap a and b_r. a is in its final place
 	//   3. Now [b_r, b_l] must be rotated (recurse)
-	printf("Rotating %.*s to the left by %d\n", (int)size, vec, (int)rot);
+	//printf("Rotating %.*s to the left by %d\n", (int)size, vec, (int)rot);
 	rot = rot % size; // Rotating by more than the full length will just loop around
 	if(rot == 0) // Case 1
 	{
@@ -111,25 +112,57 @@ void rotate_vec_recursive(char *vec, size_t size, size_t rot)
 
 }
 
+void time_rotate()
+{
+	char vec[] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+	void (*funcs[3]) (char*, size_t, size_t);
+	clock_t begin, end;
+	double time_spent;
+	double results[3][50];
+
+	funcs[0] = rotate_vec_reverse;
+	funcs[1] = rotate_vec_shuffle;
+	funcs[2] = rotate_vec_recursive;
+
+	for(int i = 0; i < 3; i++)
+	{
+		for(int rot = 1; rot <= 50; rot++)
+		{
+			// start timer
+			begin = clock();
+			for(int count = 0; count < 100000; count++)
+			{
+				funcs[i](vec, strlen(vec), rot);
+			}
+			end = clock();
+			time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+			printf("%d,%lf\n", i, time_spent);
+		}
+	}
+}
+
 int main(int argc, char*argv[])
 {
 	char vec[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', '\0'};
 	int n = 4;
 	int l = strlen(vec);
 
-	rotate_vec_reverse(vec, l, n);
-	printf("%s\n", vec);
-	rotate_vec_reverse(vec, l, l-n);
-	printf("%s\n", vec);
+	/*rotate_vec_reverse(vec, l, n);*/
+	/*printf("%s\n", vec);*/
+	/*rotate_vec_reverse(vec, l, l-n);*/
+	/*printf("%s\n", vec);*/
 
-	rotate_vec_shuffle(vec, l, n);
-	printf("%s\n", vec);
-	rotate_vec_shuffle(vec, l, l-n);
-	printf("%s\n", vec);
+	/*rotate_vec_shuffle(vec, l, n);*/
+	/*printf("%s\n", vec);*/
+	/*rotate_vec_shuffle(vec, l, l-n);*/
+	/*printf("%s\n", vec);*/
 
-	// Should be back to normal now
-	rotate_vec_recursive(vec, l, n);
-	printf("%s\n", vec);
-	rotate_vec_recursive(vec, l, l-n);
-	printf("%s\n", vec);
+	/*// Should be back to normal now*/
+	/*rotate_vec_recursive(vec, l, n);*/
+	/*printf("%s\n", vec);*/
+	/*rotate_vec_recursive(vec, l, l-n);*/
+	/*printf("%s\n", vec);*/
+
+	// Time it
+	time_rotate();
 }

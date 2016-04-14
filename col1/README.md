@@ -8,8 +8,8 @@
 4. 
 5. 10'000'000 numbers takes up 1'250'000 bytes, over a megabyte (8 numbers per byte). We can solve this by running in two passes, each focusing on a subset of the numbers available. That will easily allow us to fit within our memory constraint. Another possible solution is to look into the problem domain: These are phone numbers, and phone numbers can't start with 0 or a 1. Just by starting at 2'000'000 we eliminate enough numbers to fit into exactly 1'000'000 bytes, which is less than a megabyte.
 6. This would make the problem more complicated. Instead of a single bit for each number, we would need enough bits to story the quantity. If this max was 10, then we would need log_2(10) = 4 bits per number, quadrupling our memory usage. We could mitigate this by making four passes.
-7.
-  * We could detect if a number appeared more than once by addind a check in `setbit` that would check the value of the bit before setting it, and call the error function if it had.
+7.  
+  * We could detect if a number appeared more than once by adding a check in `setbit` that would check the value of the bit before setting it, and call the error function if it had.
   * Numbers out of range would probably cause segmentation faults, as there are no bounds checking.
   * The program would crash if the input is non numeric in `scanf`.
   * If any of these cases were to happen, the program should fail _safely_ and tell the user that the input is not acceptable.
